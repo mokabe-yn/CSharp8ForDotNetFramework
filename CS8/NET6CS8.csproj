@@ -1,17 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
 
-    <LangVersion>8.0</LangVersion>
     <IsPackable>false</IsPackable>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Properties\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <None Remove="Properties\**" />
+    <Compile Remove="DotNetFramework\bin\**" />
+    <Compile Remove="DotNetFramework\obj\**" />
+    <Compile Remove="DotNetFramework\Properties\**" />
+    <EmbeddedResource Remove="DotNetFramework\bin\**" />
+    <EmbeddedResource Remove="DotNetFramework\obj\**" />
+    <EmbeddedResource Remove="DotNetFramework\Properties\**" />
+    <None Remove="DotNetFramework\bin\**" />
+    <None Remove="DotNetFramework\obj\**" />
+    <None Remove="DotNetFramework\Properties\**" />
   </ItemGroup>
 
   <ItemGroup>
