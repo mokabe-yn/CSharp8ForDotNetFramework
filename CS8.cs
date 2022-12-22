@@ -24,10 +24,20 @@ namespace System.Diagnostics.CodeAnalysis {
     internal sealed class NotNullAttribute : Attribute { }
     [System.AttributeUsage(
         System.AttributeTargets.Parameter, Inherited = false)]
-    internal sealed class MaybeNullWhenAttribute : Attribute { }
+    internal sealed class MaybeNullWhenAttribute : Attribute {
+        public bool ParameterValue { get; }
+        public MaybeNullWhenAttribute(bool parameterValue) {
+            ParameterValue = parameterValue;
+        }
+    }
     [System.AttributeUsage(
         System.AttributeTargets.Parameter, Inherited = false)]
-    internal sealed class NotNullWhenAttribute : Attribute { }
+    internal sealed class NotNullWhenAttribute : Attribute {
+        public bool ParameterValue { get; }
+        public NotNullWhenAttribute(bool parameterValue) {
+            ParameterValue = parameterValue;
+        }
+    }
     [System.AttributeUsage(
         System.AttributeTargets.Parameter |
         System.AttributeTargets.Property |
