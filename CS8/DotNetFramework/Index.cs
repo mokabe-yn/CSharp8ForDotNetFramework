@@ -24,5 +24,28 @@ namespace CS8 {
         public void OutOfRange() {
             Assert.ThrowsException<IndexOutOfRangeException>(() => A[^0]);
         }
+
+        // ToStrings
+        [TestMethod]
+        public void ToString1() {
+            System.Index i = ^2;
+            Assert.AreEqual("^2", i.ToString());
+        }
+        [TestMethod]
+        public void ToString2() {
+            System.Index i = ^0;
+            Assert.AreEqual("^0", i.ToString());
+        }
+        [TestMethod]
+        public void ToString3() {
+            System.Index i = 0;
+            Assert.AreEqual("0", i.ToString());
+        }
+        [TestMethod]
+        public void ToString4() {
+            System.Index i = 1;
+            Assert.AreEqual("1", i.ToString());
+        }
+
     }
 }
