@@ -109,5 +109,6 @@ namespace System {
             return IsFromEnd ? $"^{Value}" : $"{_value}";
         }
         // operators
+        public static implicit operator Index(int value) => FromStart(value);
     }
 }
