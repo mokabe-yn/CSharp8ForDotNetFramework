@@ -52,25 +52,25 @@ namespace CS8 {
         }
         [TestMethod]
         public void Minus() {
-            Assert.ThrowsException<IndexOutOfRangeException>(A[1..0]);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => A[1..0]);
         }
         [TestMethod]
         public void OutOfRange() {
-            Assert.ThrowsException<IndexOutOfRangeException>(A[8..8]);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => A[8..8]);
         }
 
         // ToString
         [TestMethod]
         public void ToString1() {
-            Assert.AreEqual("0..^0", ..);
+            Assert.AreEqual("0..^0", (..).ToString());
         }
         [TestMethod]
         public void ToString2() {
-            Assert.AreEqual("3..4", 3..4);
+            Assert.AreEqual("3..4", (3..4).ToString());
         }
         [TestMethod]
         public void ToString3() {
-            Assert.AreEqual("^3..^4", ^3..^4);
+            Assert.AreEqual("^3..^4", (^3..^4).ToString());
         }
 
     }
