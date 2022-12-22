@@ -71,7 +71,7 @@ namespace System {
         private readonly int _value;
         public Index(int value, bool fromEnd = false) {
             if (value < 0) throw new ArgumentException(nameof(value));
-            _value = fromEnd ? value : ~value;
+            _value = fromEnd ? ~value : value;
         }
 
         // properties
