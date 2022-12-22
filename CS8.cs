@@ -1,5 +1,11 @@
 #nullable enable
 
+// TODO:
+// * async streams
+
+// not support list.
+// * Span<T> -> package "System.Memory"
+
 // Nullable support Attributes
 using System.IO;
 
