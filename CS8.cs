@@ -55,7 +55,7 @@ namespace System.Diagnostics.CodeAnalysis {
     internal sealed class NotNullIfNotNullAttribute : Attribute {
         public string ParameterName { get; }
         public NotNullIfNotNullAttribute(string parameterName) {
-            ParameterName = 0 switch { _ => parameterName }; // requires C#8
+            ParameterName = parameterName; // requires C#8
         }
     }
     [System.AttributeUsage(
@@ -101,7 +101,7 @@ namespace System {
         public bool Equals(Index other) {
             return _value == other._value;
         }
-        public override bool Equals(object? value) {
+        public override bool Equals(object value) {
             if (value is Index v) {
                 return Equals(v);
             } else {
@@ -151,7 +151,7 @@ namespace System {
                 End.Equals(other.End) &&
                 true;
         }
-        public override bool Equals(object? value) {
+        public override bool Equals(object value) {
             if (value is Range v) {
                 return Equals(v);
             } else {
@@ -204,7 +204,8 @@ namespace CSharp8ForDotNetFramework {
             _value ^= obj.GetHashCode();
             return this;
         }
-        public int Final() => _value;
+        // requires C#8 readonly method.
+        public readonly int Final() => _value;
         public static implicit operator int(__hashcode_cs8 @this) {
             return @this.Final();
         }
