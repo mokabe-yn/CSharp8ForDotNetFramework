@@ -185,54 +185,52 @@ namespace System {
     }
 }
 
-namespace System.Collections.Generic {
-    internal interface IAsyncEnumerable<out T> {
-        public IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default);
+namespace System {
+    namespace Collections.Generic {
+        internal interface IAsyncEnumerable<out T> {
+            public IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default);
+        }
+        internal interface IAsyncEnumerator<out T> : IAsyncDisposable {
+            public T Current { get; }
+            public System.Threading.Tasks.ValueTask<bool> MoveNextAsync();
+        }
     }
-    internal interface IAsyncEnumerator<out T> : IAsyncDisposable {
-        public T Current { get; }
+    internal interface IAsyncDisposable {
         public System.Threading.Tasks.ValueTask DisposeAsync();
-        public System.Threading.Tasks.ValueTask<bool> MoveNextAsync();
-
     }
-    public interface IAsyncDisposable { }
 }
 namespace System.Threading.Tasks {
-    internal readonly struct ValueTask : IEquatable<ValueTask> {
-        public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource source, short token) => throw new NotImplementedException();
-        public ValueTask(System.Threading.Tasks.Task task) => throw new NotImplementedException();
-
-        // properties
-        public static System.Threading.Tasks.ValueTask CompletedTask { get; }
-        public bool IsCanceled { get; }
-        public bool IsCompleted { get; }
-        public bool IsCompletedSuccessfully { get; }
-        public bool IsFaulted { get; }
-
-        // methods
-        public System.Threading.Tasks.Task AsTask() => throw new NotImplementedException();
-        public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable ConfigureAwait(bool continueOnCapturedContext) => throw new NotImplementedException();
-        public System.Runtime.CompilerServices.ValueTaskAwaiter GetAwaiter() => throw new NotImplementedException();
-        public System.Threading.Tasks.ValueTask Preserve() => throw new NotImplementedException();
-
-        // static methods
-        public static System.Threading.Tasks.ValueTask FromCanceled(System.Threading.CancellationToken cancellationToken) => throw new NotImplementedException();
-        public static System.Threading.Tasks.ValueTask<TResult> FromCanceled<TResult>(System.Threading.CancellationToken cancellationToken) => throw new NotImplementedException();
-        public static System.Threading.Tasks.ValueTask FromException(Exception exception) => throw new NotImplementedException();
-        public static System.Threading.Tasks.ValueTask<TResult> FromException<TResult>(Exception exception) => throw new NotImplementedException();
-        public static System.Threading.Tasks.ValueTask<TResult> FromResult<TResult>(TResult result) => throw new NotImplementedException();
-
-        // supports methods
-        public override bool Equals(object? obj) => throw new NotImplementedException();
-        public bool Equals(System.Threading.Tasks.ValueTask other) => throw new NotImplementedException();
-        public override int GetHashCode() => throw new NotImplementedException();
-
-        // oprrators
-        public static bool operator==(System.Threading.Tasks.ValueTask left, System.Threading.Tasks.ValueTask right) => throw new NotImplementedException();
-        public static bool operator !=(System.Threading.Tasks.ValueTask left, System.Threading.Tasks.ValueTask right) => throw new NotImplementedException();
-
+    internal static class TaskAsyncEnumerableExtensions {
+        public static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
     }
-    internal struct ValueTask<T> { }
+
+    namespace Sources {
+        internal struct ManualResetValueTaskSourceCore<TResult> {
+            public bool RunContinuationsAsynchronously { get; set; }
+            public short Version { get; }
+            public TResult GetResult(short token) => throw new NotImplementedException();
+            public System.Threading.Tasks.Sources.ValueTaskSourceStatus GetStatus(short token) => throw new NotImplementedException();
+            public void OnCompleted(Action<object?> continuation, object? state, short token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags) => throw new NotImplementedException();
+            public void Reset() => throw new NotImplementedException();
+            public void SetException(Exception error) => throw new NotImplementedException();
+            public void SetResult(TResult result) => throw new NotImplementedException();
+        }
+    }
+}
+namespace System.Runtime.CompilerServices {
+    internal readonly struct ConfiguredAsyncDisposable { }// NotImplemented
+    internal readonly struct ConfiguredCancelableAsyncEnumerable<T> { }// NotImplemented
+
+    internal struct AsyncIteratorMethodBuilder {
+        public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
+
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
+        public void Complete() => throw new NotImplementedException();
+        public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => throw new NotImplementedException();
+    } // NotImplemented
+
 }
 
 namespace CSharp8ForDotNetFramework {
