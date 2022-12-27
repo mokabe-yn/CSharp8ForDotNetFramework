@@ -201,8 +201,8 @@ namespace System {
 }
 namespace System.Threading.Tasks {
     internal static class TaskAsyncEnumerableExtensions {
-        public static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
-        public static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
     }
 
     namespace Sources {
