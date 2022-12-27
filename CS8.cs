@@ -219,8 +219,20 @@ namespace System.Threading.Tasks {
     }
 }
 namespace System.Runtime.CompilerServices {
-    /* INTERNAL */ readonly struct ConfiguredAsyncDisposable { }// NotImplemented
-    /* INTERNAL */ readonly struct ConfiguredCancelableAsyncEnumerable<T> { }// NotImplemented
+    /* INTERNAL */ readonly struct ConfiguredAsyncDisposable {
+        public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable DisposeAsync() => throw new NotImplementedException();
+    }
+    /* INTERNAL */ readonly struct ConfiguredCancelableAsyncEnumerable<T> {
+        public readonly struct Enumerator {
+            public T Current { get; }
+            public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable DisposeAsync() => throw new NotImplementedException();
+            public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<bool> MoveNextAsync() => throw new NotImplementedException();
+        }
+
+        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait(bool continueOnCapturedContext) => throw new NotImplementedException();
+        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T>.Enumerator GetAsyncEnumerator() => throw new NotImplementedException();
+        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation(System.Threading.CancellationToken cancellationToken) => throw new NotImplementedException();
+    }
 
     internal struct AsyncIteratorMethodBuilder {
         public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
@@ -229,7 +241,7 @@ namespace System.Runtime.CompilerServices {
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
         public void Complete() => throw new NotImplementedException();
         public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => throw new NotImplementedException();
-    } // NotImplemented
+    }
 
 }
 
