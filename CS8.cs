@@ -219,8 +219,8 @@ namespace System.Threading.Tasks {
     }
 }
 namespace System.Runtime.CompilerServices {
-    internal readonly struct ConfiguredAsyncDisposable { }// NotImplemented
-    internal readonly struct ConfiguredCancelableAsyncEnumerable<T> { }// NotImplemented
+    /* INTERNAL */ readonly struct ConfiguredAsyncDisposable { }// NotImplemented
+    /* INTERNAL */ readonly struct ConfiguredCancelableAsyncEnumerable<T> { }// NotImplemented
 
     internal struct AsyncIteratorMethodBuilder {
         public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
@@ -243,7 +243,7 @@ namespace CSharp8ForDotNetFramework {
     //             .Combine(_field1)
     //             .Final();
     //     }
-    struct __hashcode_cs8 {
+    /* INTERNAL */ struct __hashcode_cs8 {
         int _value;
         public __hashcode_cs8 Combine<T>(T obj) where T : struct {
             _value ^= _value << 13;
