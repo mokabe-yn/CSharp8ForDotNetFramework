@@ -201,20 +201,77 @@ namespace System {
 }
 namespace System.Threading.Tasks {
     internal static class TaskAsyncEnumerableExtensions {
-        internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
-        internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        //internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        //internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
     }
 
     namespace Sources {
         internal struct ManualResetValueTaskSourceCore<TResult> {
             public bool RunContinuationsAsynchronously { get; set; }
-            public short Version { get; }
-            public TResult GetResult(short token) => throw new NotImplementedException();
-            public System.Threading.Tasks.Sources.ValueTaskSourceStatus GetStatus(short token) => throw new NotImplementedException();
-            public void OnCompleted(Action<object?> continuation, object? state, short token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags) => throw new NotImplementedException();
-            public void Reset() => throw new NotImplementedException();
-            public void SetException(Exception error) => throw new NotImplementedException();
-            public void SetResult(TResult result) => throw new NotImplementedException();
+            public short Version { get; private set; }
+            public TResult GetResult(short token) {
+                ValidateToken(token);
+                ValidateCompleted();
+                ExceptionInfo?.Throw();
+                return ValueResult;
+            }
+            public System.Threading.Tasks.Sources.ValueTaskSourceStatus GetStatus(short token) {
+                ValidateToken(token);
+                if (!Completed) return ValueTaskSourceStatus.Pending;
+                if (ExceptionInfo is System.Runtime.ExceptionServices.ExceptionDispatchInfo e) {
+                    if(e.SourceException is System.OperationCanceledException) {
+                        return ValueTaskSourceStatus.Canceled;
+                    } else {
+                        return ValueTaskSourceStatus.Faulted;
+                    }
+                } else {
+                    return ValueTaskSourceStatus.Succeeded;
+                }
+            }
+            public void OnCompleted(Action<object?> continuation, object? state, short token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags) {
+                ValidateToken(token);
+                if (Continuation != null) {
+                    throw new InvalidOperationException();
+                }
+                Continuation = continuation;
+                ContinuationArgument = state;
+            }
+            public void Reset() {
+                Version++;
+                Completed = false;
+                ExceptionInfo = null;
+                Continuation = null;
+                ContinuationArgument = null;
+            }
+            public void SetException(Exception error) {
+                ExceptionInfo = System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error);
+                Complete();
+            }
+            public void SetResult(TResult result) {
+                ValueResult = result;
+                Complete();
+            }
+
+            // private members
+            bool Completed { get; set; }
+            TResult ValueResult { get; set; }
+            Action<object?>? Continuation { get; set; }
+            object? ContinuationArgument { get; set; }
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo? ExceptionInfo { get; set; }
+            void ValidateToken(short token) {
+                if (Version != token) {
+                    throw new InvalidOperationException();
+                }
+            }
+            void Complete() {
+                Completed = true;
+                Continuation?.Invoke(ContinuationArgument);
+            }
+            void ValidateCompleted() {
+                if (!Completed) {
+                    throw new InvalidOperationException();
+                }
+            }
         }
     }
 }
@@ -235,12 +292,13 @@ namespace System.Runtime.CompilerServices {
     }
 
     internal struct AsyncIteratorMethodBuilder {
+        System.Threading.Tasks.Task? _task;
         public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
 
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
         public void Complete() => throw new NotImplementedException();
-        public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => throw new NotImplementedException();
+        public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => default;
     }
 
 }
