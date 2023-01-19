@@ -7,7 +7,8 @@
 // * Span<T> -> package "System.Memory"
 
 // Nullable support Attributes
-using System.IO;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace System.Diagnostics.CodeAnalysis {
     [System.AttributeUsage(
@@ -201,8 +202,8 @@ namespace System {
 }
 namespace System.Threading.Tasks {
     internal static class TaskAsyncEnumerableExtensions {
-        //internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
-        //internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
+        internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
     }
 
     namespace Sources {
@@ -292,12 +293,28 @@ namespace System.Runtime.CompilerServices {
     }
 
     internal struct AsyncIteratorMethodBuilder {
-        System.Threading.Tasks.Task? _task;
-        public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
+        System.Threading.Tasks.Task? _st;
+        public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+            stateMachine.MoveNext();
+        }
 
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine => throw new NotImplementedException();
-        public void Complete() => throw new NotImplementedException();
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion
+            where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+
+            try {
+                stateMachine.MoveNext();
+            }catch(Exception e) {
+                var einfo = System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(e);
+                System.Threading.ThreadPool.QueueUserWorkItem(state => ((System.Runtime.ExceptionServices.ExceptionDispatchInfo)state!).Throw(), einfo);
+            }
+        }
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+            AwaitOnCompleted(ref awaiter, ref stateMachine);
+        }
+        public void Complete() { }
         public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => default;
     }
 

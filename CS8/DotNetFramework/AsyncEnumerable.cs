@@ -41,6 +41,9 @@ namespace CS8 {
             Task.WaitAll(new[] { t1, t2 });
 
             CollectionAssert.AreEqual(new[] { 0, 1, 0, 1, 0, 1 }, q.Q);
+            //System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore;
+            //System.Runtime.CompilerServices.ConfiguredAsyncDisposable;
+            //System.Runtime.CompilerServices.AsyncIteratorMethodBuilder
         }
     }
 }
