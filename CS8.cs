@@ -201,10 +201,6 @@ namespace System {
     }
 }
 namespace System.Threading.Tasks {
-    internal static class TaskAsyncEnumerableExtensions {
-        internal static System.Runtime.CompilerServices.ConfiguredAsyncDisposable ConfigureAwait(this System.IAsyncDisposable source, bool continueOnCapturedContext) => throw new NotImplementedException();
-        internal static System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait<T>(this System.Collections.Generic.IAsyncEnumerable<T> source, bool continueOnCapturedContext) => throw new NotImplementedException();
-    }
 
     namespace Sources {
         internal struct ManualResetValueTaskSourceCore<TResult> {
@@ -277,23 +273,8 @@ namespace System.Threading.Tasks {
     }
 }
 namespace System.Runtime.CompilerServices {
-    /* INTERNAL */ readonly struct ConfiguredAsyncDisposable {
-        public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable DisposeAsync() => throw new NotImplementedException();
-    }
-    /* INTERNAL */ readonly struct ConfiguredCancelableAsyncEnumerable<T> {
-        public readonly struct Enumerator {
-            public T Current { get; }
-            public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable DisposeAsync() => throw new NotImplementedException();
-            public System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<bool> MoveNextAsync() => throw new NotImplementedException();
-        }
-
-        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> ConfigureAwait(bool continueOnCapturedContext) => throw new NotImplementedException();
-        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T>.Enumerator GetAsyncEnumerator() => throw new NotImplementedException();
-        public System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T> WithCancellation(System.Threading.CancellationToken cancellationToken) => throw new NotImplementedException();
-    }
 
     internal struct AsyncIteratorMethodBuilder {
-        System.Threading.Tasks.Task? _st;
         public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
             stateMachine.MoveNext();
         }
