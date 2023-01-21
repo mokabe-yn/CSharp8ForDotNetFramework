@@ -1,7 +1,5 @@
 #nullable enable
 
-// TODO:
-
 // not support list.
 // * Span<T> -> package "System.Memory"
 
