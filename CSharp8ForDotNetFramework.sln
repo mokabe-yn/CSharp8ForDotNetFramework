@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NET6CS8", "CS8\NET6CS8.csproj", "{E5788608-2F2E-47AB-840D-341198205B18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NET6CS8", "CS8\DotNETCS8.csproj", "{E5788608-2F2E-47AB-840D-341198205B18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CS8", "CS8\DotNetFramework\CS8.csproj", "{9D81BAEB-1211-49A4-B31B-5F01E99BC19C}"
 EndProject
