@@ -1,14 +1,12 @@
 #nullable enable
 
 // TODO:
-// * async streams
 
 // not support list.
 // * Span<T> -> package "System.Memory"
 
-// Nullable support Attributes
-using System.IO;
 
+// Nullable support Attributes
 namespace System.Diagnostics.CodeAnalysis {
     [System.AttributeUsage(
         System.AttributeTargets.Field |
@@ -185,6 +183,121 @@ namespace System {
     }
 }
 
+// IAsyncEnumerable, and requested functions from compiler.
+namespace System {
+    namespace Collections.Generic {
+        internal interface IAsyncEnumerable<out T> {
+            public IAsyncEnumerator<T> GetAsyncEnumerator(System.Threading.CancellationToken cancellationToken = default);
+        }
+        internal interface IAsyncEnumerator<out T> : IAsyncDisposable {
+            public T Current { get; }
+            public System.Threading.Tasks.ValueTask<bool> MoveNextAsync();
+        }
+    }
+    internal interface IAsyncDisposable {
+        public System.Threading.Tasks.ValueTask DisposeAsync();
+    }
+}
+namespace System.Threading.Tasks {
+    namespace Sources {
+        internal struct ManualResetValueTaskSourceCore<TResult> {
+            public bool RunContinuationsAsynchronously { get; set; }
+            public short Version { get; private set; }
+            public TResult GetResult(short token) {
+                ValidateToken(token);
+                ValidateCompleted();
+                ExceptionInfo?.Throw();
+                return ValueResult;
+            }
+            public System.Threading.Tasks.Sources.ValueTaskSourceStatus GetStatus(short token) {
+                ValidateToken(token);
+                if (!Completed) return ValueTaskSourceStatus.Pending;
+                if (ExceptionInfo is System.Runtime.ExceptionServices.ExceptionDispatchInfo e) {
+                    if(e.SourceException is System.OperationCanceledException) {
+                        return ValueTaskSourceStatus.Canceled;
+                    } else {
+                        return ValueTaskSourceStatus.Faulted;
+                    }
+                } else {
+                    return ValueTaskSourceStatus.Succeeded;
+                }
+            }
+            public void OnCompleted(Action<object?> continuation, object? state, short token, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags flags) {
+                ValidateToken(token);
+                if (Continuation != null) {
+                    throw new InvalidOperationException();
+                }
+                Continuation = continuation;
+                ContinuationArgument = state;
+            }
+            public void Reset() {
+                Version++;
+                Completed = false;
+                ExceptionInfo = null;
+                Continuation = null;
+                ContinuationArgument = null;
+            }
+            public void SetException(Exception error) {
+                ExceptionInfo = System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error);
+                Complete();
+            }
+            public void SetResult(TResult result) {
+                ValueResult = result;
+                Complete();
+            }
+
+            // private members
+            bool Completed { get; set; }
+            TResult ValueResult { get; set; }
+            Action<object?>? Continuation { get; set; }
+            object? ContinuationArgument { get; set; }
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo? ExceptionInfo { get; set; }
+            void ValidateToken(short token) {
+                if (Version != token) {
+                    throw new InvalidOperationException();
+                }
+            }
+            void Complete() {
+                Completed = true;
+                Continuation?.Invoke(ContinuationArgument);
+            }
+            void ValidateCompleted() {
+                if (!Completed) {
+                    throw new InvalidOperationException();
+                }
+            }
+        }
+    }
+}
+namespace System.Runtime.CompilerServices {
+
+    internal struct AsyncIteratorMethodBuilder {
+        public void MoveNext<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+            stateMachine.MoveNext();
+        }
+
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : System.Runtime.CompilerServices.INotifyCompletion
+            where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+
+            try {
+                stateMachine.MoveNext();
+            }catch(Exception e) {
+                var einfo = System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(e);
+                System.Threading.ThreadPool.QueueUserWorkItem(state => ((System.Runtime.ExceptionServices.ExceptionDispatchInfo)state!).Throw(), einfo);
+            }
+        }
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : System.Runtime.CompilerServices.ICriticalNotifyCompletion
+            where TStateMachine : System.Runtime.CompilerServices.IAsyncStateMachine {
+            AwaitOnCompleted(ref awaiter, ref stateMachine);
+        }
+        public void Complete() { }
+        public static System.Runtime.CompilerServices.AsyncIteratorMethodBuilder Create() => default;
+    }
+
+}
+
 namespace CSharp8ForDotNetFramework {
     // INTERNAL hash utility.
     // usage:
@@ -195,7 +308,7 @@ namespace CSharp8ForDotNetFramework {
     //             .Combine(_field1)
     //             .Final();
     //     }
-    struct __hashcode_cs8 {
+    /* INTERNAL */ struct __hashcode_cs8 {
         int _value;
         public __hashcode_cs8 Combine<T>(T obj) where T : struct {
             _value ^= _value << 13;
