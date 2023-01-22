@@ -52,3 +52,9 @@ namespace System.Diagnostics.CodeAnalysis {
         }
     }
 }
+
+
+// "init" property
+namespace System.Runtime.CompilerServices {
+    internal static class IsExternalInit { }
+}

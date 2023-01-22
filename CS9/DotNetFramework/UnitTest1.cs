@@ -3,9 +3,9 @@ using System;
 
 namespace CS9 {
     [TestClass]
-    public class Index {
+    public class UnitTest1 {
         [TestMethod]
-        public void Method() {
+        public void TestMethod1() {
         }
     }
 }
