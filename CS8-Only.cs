@@ -26,9 +26,6 @@
 // DEALINGS IN THE SOFTWARE.
 
 
-// not support list.
-// * Span<T> -> package "System.Memory"
-
 
 #nullable enable
 // Nullable support Attributes
