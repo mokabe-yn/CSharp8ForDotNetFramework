@@ -31,7 +31,7 @@ namespace System.Diagnostics.CodeAnalysis {
         System.AttributeTargets.Method |
         System.AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
     internal sealed class MemberNotNullAttribute : Attribute {
-        public string[] Members { get; }
+        public string[] Members { get; private init; } // force C#9
         public MemberNotNullAttribute(string member) :
             this(new string[] { member }) { }
         public MemberNotNullAttribute(string[] members) {
@@ -51,4 +51,10 @@ namespace System.Diagnostics.CodeAnalysis {
             Members = members;
         }
     }
+}
+
+
+// "init" property
+namespace System.Runtime.CompilerServices {
+    internal static class IsExternalInit { }
 }
