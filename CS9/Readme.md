@@ -1,11 +1,11 @@
 CS8.csproj
 ====
 
-C#8�����ɏ������@�\���Ӑ}�ʂ�ɗ��p�ł��邩���e�X�g����B
+C#8向けに書いた機能を意図通りに利用できるかをテストする。
 
 NET6CS8.csproj
 ====
 
-`CS8.csproj`�̃e�X�g�B
-�{���� .NET 6 �ƈႤ���̂��������Ă��Ȃ����̌��؁B
+`CS8.csproj`のテスト。
+本来の .NET 6 と違うものを実装していないかの検証。
 
