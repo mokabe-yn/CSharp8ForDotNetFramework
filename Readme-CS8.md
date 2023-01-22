@@ -137,3 +137,13 @@ void Assert([DoesNotReturnIf(false)]bool condition) { ...; }
 ```
 
 
+その他
+===
+
+ValueTask
+---
+
+[非同期イテレータブロック](#非同期イテレータブロック) の実装に必要。
+コンパイルを通すためだけの最低限の実装しかしていない。
+
+可能なら、Microsoft製の[System.Threading.Tasks.Extensions](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/)に置き換えるべき。
