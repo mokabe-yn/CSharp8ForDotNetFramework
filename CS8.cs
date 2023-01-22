@@ -322,6 +322,176 @@ namespace System.Runtime.CompilerServices {
 
 }
 
+// Valuetask
+namespace System.Threading.Tasks {
+    internal struct ValueTask {
+        private enum Mode {
+            None,
+            Source,
+            Task,
+            Result,
+        }
+        Mode _mode;
+        object? _obj;
+
+        public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource source, short token) {
+            _mode = Mode.Source;
+            _obj = ValueTuple.Create(source, token);
+        }
+        public ValueTask(System.Threading.Tasks.Task task) {
+            _mode = Mode.Task;
+            _obj = task;
+        }
+        public Awaiter GetAwaiter() => new Awaiter(in this);
+        public struct Awaiter : System.Runtime.CompilerServices.INotifyCompletion {
+            Mode _mode;
+            object? _obj;
+            public Awaiter(in ValueTask parent) {
+                _mode = parent._mode;
+                _obj = parent._obj;
+            }
+            public bool IsCompleted {
+                get {
+                    switch (_mode) {
+                        case Mode.None:
+                            return true;  // default(ValueTask)
+                        case Mode.Source:
+                            var (source, token) = (ValueTuple<System.Threading.Tasks.Sources.IValueTaskSource, short>)_obj!;
+                            return source.GetStatus(token) != Sources.ValueTaskSourceStatus.Pending;
+                        case Mode.Task:
+                            var task = (System.Threading.Tasks.Task)_obj!;
+                            return task.IsCompleted;
+                        default:
+                            throw new InvalidOperationException();
+                    }
+                }
+            }
+            public void OnCompleted(Action continuation) {
+                switch (_mode) {
+                    case Mode.Source:
+                        var (source, token) = (ValueTuple<System.Threading.Tasks.Sources.IValueTaskSource, short>)_obj!;
+                        source.OnCompleted(_ => continuation(), null, token, Sources.ValueTaskSourceOnCompletedFlags.None);
+                        break;
+                    case Mode.Task:
+                        var task = (System.Threading.Tasks.Task)_obj!;
+                        task.GetAwaiter().OnCompleted(continuation);
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+            public void GetResult() {
+            }
+        }
+    }
+    internal struct ValueTask<TResult> {
+        private enum Mode {
+            None,
+            Source,
+            Task,
+            Result,
+        }
+        Mode _mode;
+        object? _obj;
+
+        public ValueTask(System.Threading.Tasks.Sources.IValueTaskSource<TResult> source, short token) {
+            _mode = Mode.Source;
+            _obj = ValueTuple.Create(source, token);
+        }
+        public ValueTask(System.Threading.Tasks.Task<TResult> task) {
+            _mode = Mode.Task;
+            _obj = task;
+        }
+        public ValueTask(TResult result) {
+            _mode = Mode.Result;
+            _obj = result;
+        }
+        public Awaiter GetAwaiter() => new Awaiter(in this);
+        public struct Awaiter : System.Runtime.CompilerServices.INotifyCompletion {
+            Mode _mode;
+            object? _obj;
+            public Awaiter(in ValueTask<TResult> parent) {
+                _mode = parent._mode;
+                _obj = parent._obj;
+            }
+            public bool IsCompleted {
+                get {
+                    switch (_mode) {
+                        case Mode.None:
+                            return true; // default(ValueTask)
+                        case Mode.Source:
+                            var (source, token) = (ValueTuple<System.Threading.Tasks.Sources.IValueTaskSource<TResult>, short>)_obj!;
+                            return source.GetStatus(token) != Sources.ValueTaskSourceStatus.Pending;
+                        case Mode.Task:
+                            var task = (System.Threading.Tasks.Task<TResult>)_obj!;
+                            return task.IsCompleted;
+                        case Mode.Result:
+                            var result = (TResult)_obj!;
+                            return true;
+                        default:
+                            throw new InvalidOperationException();
+                    }
+                }
+            }
+            public void OnCompleted(Action continuation) {
+                switch (_mode) {
+                    case Mode.Source:
+                        var (source, token) = (ValueTuple<System.Threading.Tasks.Sources.IValueTaskSource<TResult>, short>)_obj!;
+                        source.OnCompleted(_ => continuation(), null, token, Sources.ValueTaskSourceOnCompletedFlags.None);
+                        break;
+                    case Mode.Task:
+                        var task = (System.Threading.Tasks.Task<TResult>)_obj!;
+                        task.GetAwaiter().OnCompleted(continuation);
+                        break;
+                    case Mode.Result:
+                        var result = (TResult)_obj!;
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+            public TResult GetResult() {
+                switch (_mode) {
+                    case Mode.Source:
+                        var (source, token) = (ValueTuple<System.Threading.Tasks.Sources.IValueTaskSource<TResult>, short>)_obj!;
+                        return source.GetResult(token);
+                    case Mode.Task:
+                        var task = (System.Threading.Tasks.Task<TResult>)_obj!;
+                        return task.Result;
+                    case Mode.Result:
+                        var result = (TResult)_obj!;
+                        return result;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+    }
+    namespace Sources {
+        internal enum ValueTaskSourceOnCompletedFlags {
+            None,
+            UseSchedulingContext,
+            FlowExecutionContext,
+        }
+        internal enum ValueTaskSourceStatus {
+            Pending,
+            Succeeded,
+            Faulted,
+            Canceled,
+        }
+        internal interface IValueTaskSource {
+            void GetResult(short token);
+            ValueTaskSourceStatus GetStatus(short token);
+            void OnCompleted(Action<object?> continuation, object? state, short token, ValueTaskSourceOnCompletedFlags flags);
+        }
+        internal interface IValueTaskSource<out TResult> {
+            TResult GetResult(short token);
+            ValueTaskSourceStatus GetStatus(short token);
+            void OnCompleted(Action<object?> continuation, object? state, short token, ValueTaskSourceOnCompletedFlags flags);
+        }
+    }
+}
+
 namespace CSharp8ForDotNetFramework {
     // INTERNAL hash utility.
     // usage:
