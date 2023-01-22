@@ -12,7 +12,7 @@ namespace CS8 {
         // Nullable フロー解析
 
         static void AllowNull([AllowNull] string _) { }
-        // Disallow のテスト不可
+        static string DisallowNull([DisallowNull] string? s) => s;
         static void MaybeNull([MaybeNull] out string s) => s = null;
         static void NotNull([NotNull] out string? s) => s = "";
         static bool MaybeNullWhen([MaybeNullWhen(false)] out string s) {
@@ -36,6 +36,11 @@ namespace CS8 {
 
         public void AllowNull() {
             AllowNull(null);
+        }
+        public void DisallowNull() {
+            // 定義側で入力がDisallowになっている。
+            // 利用側で(無警告状態での)検証は不可。
+            DisallowNull("");
         }
         public void MaybeNull() {
             MaybeNull(out string? s);
