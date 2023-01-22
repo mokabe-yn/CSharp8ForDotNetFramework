@@ -323,6 +323,8 @@ namespace System.Runtime.CompilerServices {
 }
 
 // Valuetask
+// This is implemented minimum.
+// You should replace "System.Threading.Tasks.Extensions" by NuGet, if able.
 namespace System.Threading.Tasks {
     internal struct ValueTask {
         private enum Mode {
