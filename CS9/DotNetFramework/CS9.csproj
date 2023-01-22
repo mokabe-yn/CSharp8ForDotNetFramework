@@ -60,8 +60,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\CS8.cs" />
-    <Compile Include="..\..\CS9.cs" />
+    <Compile Include="..\..\CS8-Only.cs" />
+    <Compile Include="..\..\CS9-Only.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
