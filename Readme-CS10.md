@@ -1,9 +1,6 @@
 C#10
 ===
 
-このライブラリでは、以下の機能をサポートしています。
-
-
 呼び出し元情報
 ----
 呼び出し元が与えた引数の式を文字列として取得する。
@@ -21,4 +18,3 @@ static void DebugPrint<T>(
     [CallerMemberName] string? from_member= null,
     [CallerArgumentExpression("value")] string? expression = null) {...}
 ```
-
