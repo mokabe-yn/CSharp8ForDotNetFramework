@@ -19,6 +19,16 @@ C#9の場合は `CS9.cs` をプロジェクトに追加する。
 
 用意されているプロジェクトはすべてテストか利用例のため無視してよい。
 
+
+各機能の説明
+===
+それぞれのバージョンのReadmeを参照。
+
+- [C#8](Readme-CS8.md)
+- [C#9](Readme-CS9.md)
+- [C#10](Readme-CS10.md)
+
+
 ライセンス
 ====
 Boost Software License.
