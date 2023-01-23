@@ -24,3 +24,16 @@
 // FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
+
+#nullable enable
+
+// CallerArgumentExpression
+namespace System.Runtime.CompilerServices {
+    [System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+    internal sealed class CallerArgumentExpressionAttribute : Attribute {
+        public string ParameterName { get; }
+        public CallerArgumentExpressionAttribute(string parameterName) {
+            ParameterName = parameterName;
+        }
+    }
+}
