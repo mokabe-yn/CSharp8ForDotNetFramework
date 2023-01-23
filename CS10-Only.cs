@@ -28,12 +28,13 @@
 #nullable enable
 
 // CallerArgumentExpression
+
 namespace System.Runtime.CompilerServices {
     [System.AttributeUsage(System.AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
     internal sealed class CallerArgumentExpressionAttribute : Attribute {
         public string ParameterName { get; }
         public CallerArgumentExpressionAttribute(string parameterName) {
-            ParameterName = parameterName;
+            (ParameterName, var _) = (parameterName, 0); // force C#10
         }
     }
 }
