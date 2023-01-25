@@ -28,6 +28,26 @@
 
 
 // Nullable support Attributes
+
 namespace System {
-    ref struct A { }
+    ref struct Span<T> {
+        //ref T[] a;
+        //Pinnable<T>
+        public Span<T> Slice(int a, int b) {
+            throw new NotImplementedException();
+        }
+        public T this[int index] {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+        public Span(T[] array) => throw new NotImplementedException();
+        public Span(T[] array, int start, int length) => throw new NotImplementedException();
+        public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
+    }
+    internal static class _____ {
+        public static Span<T> AsSpan<T>(this T[] array) {
+            throw new NotImplementedException();
+        }
+    }
 }
+
