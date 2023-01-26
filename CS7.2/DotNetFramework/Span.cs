@@ -5,7 +5,8 @@ namespace CS7_2 {
     [TestClass]
     public class Span {
         public void CanStackAlloc() {
-            Span<int> stack = stackalloc int[8];
+            // not supported.
+            // Span<int> stack = stackalloc int[8];
         }
         [TestMethod]
         public void Write() {
@@ -13,7 +14,6 @@ namespace CS7_2 {
             var s = array.AsSpan().Slice(1, 2);
             s[0] = 10;
             CollectionAssert.AreEqual(array, new int[] { 0, 10, 2, 3, 4 });
-            Span<int> stack = stackalloc int[8];
         }
     }
 }

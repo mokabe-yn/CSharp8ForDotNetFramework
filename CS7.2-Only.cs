@@ -42,7 +42,9 @@ namespace System {
         }
         public Span(T[] array) => throw new NotImplementedException();
         public Span(T[] array, int start, int length) => throw new NotImplementedException();
-        public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
+        // `Span<T> _ = stackalloc T[N]` is not supported.
+        // because require unsafe block.
+        //public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
     }
     internal static class _____ {
         public static Span<T> AsSpan<T>(this T[] array) {
