@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Span.cs" />
-    <Compile Include="ReadOnlySpan.cs" />
+    <Compile Include="ReadOnlySpanString.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

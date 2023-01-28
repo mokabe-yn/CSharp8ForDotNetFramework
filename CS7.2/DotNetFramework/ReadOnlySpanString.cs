@@ -16,6 +16,24 @@ namespace CS7_2 {
         public void Slice2() {
             Assert.AreEqual("012345".AsSpan().Slice(2, 3).ToString(), "234");
         }
+    }
+    [TestClass]
+    public class ReadOnlySpanStringEdgeCase {
+        [TestMethod]
+        public void SliceEdgeCase1() {
+            Assert.AreEqual("012345".AsSpan().Slice(0, 0).ToString(), "");
+        }
+        [TestMethod]
+        public void SliceEdgeCase2() {
+            Assert.AreEqual("012345".AsSpan().Slice(6).ToString(), "");
+        }
+        [TestMethod]
+        public void SliceEdgeCase3() {
+            Assert.AreEqual("012345".AsSpan().Slice(6, 0).ToString(), "");
+        }
+    }
+    [TestClass]
+    public class ReadOnlySpanStringThrows {
         [TestMethod]
         public void SliceOutOfRange1() {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan().Slice(-1));
@@ -39,18 +57,6 @@ namespace CS7_2 {
         [TestMethod]
         public void SliceOutOfRange6() {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan().Slice(7, 0));
-        }
-        [TestMethod]
-        public void SliceEdgeCase1() {
-            Assert.Equals("012345".AsSpan().Slice(0, 0).ToString(), "");
-        }
-        [TestMethod]
-        public void SliceEdgeCase2() {
-            Assert.Equals("012345".AsSpan().Slice(6).ToString(), "");
-        }
-        [TestMethod]
-        public void SliceEdgeCase3() {
-            Assert.Equals("012345".AsSpan().Slice(6, 0).ToString(), "");
         }
     }
 }
