@@ -18,6 +18,13 @@ namespace CS7_2 {
         }
     }
     [TestClass]
+    public class DualReadOnlySpanString {
+        [TestMethod]
+        public void Dual() {
+            Assert.AreEqual("012345".AsSpan().Slice(1, 3).Slice(2, 1).ToString(), "3");
+        }
+    }
+    [TestClass]
     public class ReadOnlySpanStringEdgeCase {
         [TestMethod]
         public void SliceEdgeCase1() {

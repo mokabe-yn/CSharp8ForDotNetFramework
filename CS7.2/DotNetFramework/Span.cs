@@ -27,6 +27,36 @@ namespace CS7_2 {
             var s = array.AsSpan().Slice(3, 3);
             CollectionAssert.AreEqual(s.ToArray(), new int[] { 3, 4, 5 });
         }
+        [TestMethod]
+        public void Span3() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var s = array.AsSpan().Slice(0);
+            CollectionAssert.AreEqual(s.ToArray(), new int[] { 0, 1, 2, 3, 4, 5, 6 });
+        }
+        [TestMethod]
+        public void Span4() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var s = array.AsSpan().Slice(1);
+            CollectionAssert.AreEqual(s.ToArray(), new int[] { 1, 2, 3, 4, 5, 6 });
+        }
+    }
+    [TestClass]
+    public class DualSpan {
+        [TestMethod]
+        public void Dual() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var s1 = array.AsSpan().Slice(1, 5); // 1,2,3,4,5
+            var s2 = s1.Slice(1, 3); // 2,3,4
+            CollectionAssert.AreEqual(s2.ToArray(), new int[] { 2, 3, 4 });
+        }
+        [TestMethod]
+        public void DualWrite() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var s1 = array.AsSpan().Slice(1, 5); // 1,2,3,4,5
+            var s2 = s1.Slice(1, 3); // 2,3,4
+            s2[0] = 10;
+            CollectionAssert.AreEqual(array, new int[] { 0, 1, 10, 3, 4, 5, 6 });
+        }
     }
     [TestClass]
     public class SpanEdgeCase {
