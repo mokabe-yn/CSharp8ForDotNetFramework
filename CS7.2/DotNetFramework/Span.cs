@@ -23,6 +23,12 @@ namespace CS7_2 {
             CollectionAssert.AreEqual(array, new int[] { 0, 1, 2, 10, 4 });
         }
         [TestMethod]
+        public void Read1() {
+            int[] array = new int[] { 0, 1, 2, 3, 4 };
+            var s = array.AsSpan(2);
+            Assert.AreEqual(3, s[1]);
+        }
+        [TestMethod]
         public void Span1() {
             int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
             var s = array.AsSpan().Slice(1, 3);
