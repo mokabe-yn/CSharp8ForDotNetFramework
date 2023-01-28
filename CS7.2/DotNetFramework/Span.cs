@@ -39,6 +39,12 @@ namespace CS7_2 {
             var s = array.AsSpan().Slice(1);
             CollectionAssert.AreEqual(s.ToArray(), new int[] { 1, 2, 3, 4, 5, 6 });
         }
+        [TestMethod]
+        public void Span5() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var s = array.AsSpan(1).Slice(1);
+            CollectionAssert.AreEqual(s.ToArray(), new int[] { 2, 3, 4, 5, 6 });
+        }
     }
     [TestClass]
     public class DualSpan {
@@ -62,21 +68,26 @@ namespace CS7_2 {
     public class SpanEdgeCase {
         [TestMethod]
         public void Empty1() {
-            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
             var s = array.AsSpan().Slice(0, 0);
             Assert.IsTrue(s.IsEmpty);
         }
         [TestMethod]
         public void Empty2() {
-            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
-            var s = array.AsSpan().Slice(7, 0);
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+            var s = array.AsSpan().Slice(6, 0);
             Assert.IsTrue(s.IsEmpty);
         }
         [TestMethod]
         public void Empty3() {
-            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
-            var s = array.AsSpan().Slice(7);
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+            var s = array.AsSpan().Slice(6);
             Assert.IsTrue(s.IsEmpty);
+        }
+        [TestMethod]
+        public void AsSpanEdgeCase1() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+            _ = array.AsSpan(6);
         }
     }
     [TestClass]
@@ -103,6 +114,15 @@ namespace CS7_2 {
         public void OutOfRange5() {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan().Slice(5, 2));
         }
-
+        [TestMethod]
+        public void SpanRange1() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(1-));
+        }
+        [TestMethod]
+        public void SpanRange2() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(1 -));
+        }
     }
 }

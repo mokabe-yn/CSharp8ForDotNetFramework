@@ -16,6 +16,10 @@ namespace CS7_2 {
         public void Slice2() {
             Assert.AreEqual("012345".AsSpan().Slice(2, 3).ToString(), "234");
         }
+        [TestMethod]
+        public void Slice3() {
+            Assert.AreEqual("012345".AsSpan(1).Slice(2, 3).ToString(), "345");
+        }
     }
     [TestClass]
     public class DualReadOnlySpanString {
@@ -37,6 +41,10 @@ namespace CS7_2 {
         [TestMethod]
         public void SliceEdgeCase3() {
             Assert.AreEqual("012345".AsSpan().Slice(6, 0).ToString(), "");
+        }
+        [TestMethod]
+        public void AsSpanEdgeCase1() {
+            _ = "012345".AsSpan(6);
         }
     }
     [TestClass]
@@ -64,6 +72,14 @@ namespace CS7_2 {
         [TestMethod]
         public void SliceOutOfRange6() {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan().Slice(7, 0));
+        }
+        [TestMethod]
+        public void SpanRange1() {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan(-1));
+        }
+        [TestMethod]
+        public void SpanRange2() {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan(7));
         }
     }
 }
