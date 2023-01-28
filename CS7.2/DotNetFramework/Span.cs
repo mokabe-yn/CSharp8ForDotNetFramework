@@ -9,11 +9,18 @@ namespace CS7_2 {
             // Span<int> stack = stackalloc int[8];
         }
         [TestMethod]
-        public void Write() {
+        public void Write1() {
             int[] array = new int[] { 0, 1, 2, 3, 4 };
             var s = array.AsSpan().Slice(1, 2);
             s[0] = 10;
             CollectionAssert.AreEqual(array, new int[] { 0, 10, 2, 3, 4 });
+        }
+        [TestMethod]
+        public void Write2() {
+            int[] array = new int[] { 0, 1, 2, 3, 4 };
+            var s = array.AsSpan();
+            s[3] = 10;
+            CollectionAssert.AreEqual(array, new int[] { 0, 1, 2, 10, 4 });
         }
         [TestMethod]
         public void Span1() {
