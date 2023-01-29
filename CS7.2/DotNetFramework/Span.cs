@@ -58,6 +58,14 @@ namespace CS7_2 {
             var s = array.AsSpan(1).Slice(1);
             CollectionAssert.AreEqual(s.ToArray(), new int[] { 2, 3, 4, 5, 6 });
         }
+        [TestMethod]
+        public void ToArray() {
+            int[] array = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+            var a2 = array.AsSpan(1).Slice(1, 1).ToArray();
+            // ToArrayすると参照は切れる
+            a2[0] = 10;
+            Assert.AreNotEqual(array[2], 10);
+        }
     }
     [TestClass]
     public class DualSpan {
@@ -130,12 +138,12 @@ namespace CS7_2 {
         [TestMethod]
         public void SpanRange1() {
             int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(1-));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(-1));
         }
         [TestMethod]
         public void SpanRange2() {
             int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(1 -));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(7));
         }
     }
 }
