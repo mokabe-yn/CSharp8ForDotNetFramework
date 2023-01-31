@@ -61,6 +61,7 @@ namespace System {
         public Span(T[] array) : this(array, 0, array.Length) { }
         public Span(T[] array, int start, int length) {
             if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (start > array.Length) throw new ArgumentOutOfRangeException(nameof(start));
             if (start + length > array.Length) throw new ArgumentOutOfRangeException(nameof(length));
             _ref = array;
@@ -103,6 +104,7 @@ namespace System {
         public ReadOnlySpan(T[] array) : this(array, 0, array.Length) { }
         public ReadOnlySpan(T[] array, int start, int length) {
             if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (start > array.Length) throw new ArgumentOutOfRangeException(nameof(start));
             if (start + length > array.Length) throw new ArgumentOutOfRangeException(nameof(length));
             _ref = array;

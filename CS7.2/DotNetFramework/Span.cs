@@ -136,6 +136,10 @@ namespace CS7_2 {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan().Slice(5, 2));
         }
         [TestMethod]
+        public void OutOfRange6() {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan().Slice(3, -1));
+        }
+        [TestMethod]
         public void SpanRange1() {
             int[] array = new int[] { 0, 1, 2, 3, 4, 5 };
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => array.AsSpan(-1));

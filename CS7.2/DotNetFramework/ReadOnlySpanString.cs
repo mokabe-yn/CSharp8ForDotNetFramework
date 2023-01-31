@@ -74,6 +74,10 @@ namespace CS7_2 {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan().Slice(7, 0));
         }
         [TestMethod]
+        public void SliceOutOfRange7() {
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan().Slice(3, -1));
+        }
+        [TestMethod]
         public void SpanRange1() {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => "012345".AsSpan(-1));
         }
