@@ -133,11 +133,23 @@ namespace System {
         public static Span<T> AsSpan<T>(this T[] array, int start) {
             return new Span<T>(array, start, array.Length - start);
         }
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<string, char[]> _chararray_cache_table = new System.Runtime.CompilerServices.ConditionalWeakTable<string, char[]>();
+        private static char[] _chararray_cache(string text) {
+            if(_chararray_cache_table.TryGetValue(text, out char[] cache)) {
+                return cache;
+            } else {
+                char[] value = System.Linq.Enumerable.ToArray(text);
+                _chararray_cache_table.Add(text, value);
+                return value;
+            }
+        }
+
         public static ReadOnlySpan<char> AsSpan(this string text) {
-            return new ReadOnlySpan<char>(System.Linq.Enumerable.ToArray(text));
+            return new ReadOnlySpan<char>(_chararray_cache(text));
         }
         public static ReadOnlySpan<char> AsSpan(this string text, int start) {
-            return new ReadOnlySpan<char>(System.Linq.Enumerable.ToArray(text), start, text.Length - start);
+            return new ReadOnlySpan<char>(_chararray_cache(text), start, text.Length - start);
         }
     }
 }
