@@ -73,8 +73,8 @@ namespace System {
         public T[] ToArray() {
             if (_length == 0) return Array.Empty<T>();
             T[] ret = new T[_length];
-            for(int srci=_start, dsti = 0; srci < _length; srci++, dsti++) {
-                ret[dsti] = ret[srci];
+            for(int srci=_start, dsti = 0; dsti < _length; srci++, dsti++) {
+                ret[dsti] = _ref[srci];
             }
             return ret;
         }
@@ -114,8 +114,8 @@ namespace System {
         public T[] ToArray() {
             if (_length == 0) return Array.Empty<T>();
             T[] ret = new T[_length];
-            for (int srci = _start, dsti = 0; srci < _length; srci++, dsti++) {
-                ret[dsti] = ret[srci];
+            for (int srci = _start, dsti = 0; dsti < _length; srci++, dsti++) {
+                ret[dsti] = _ref[srci];
             }
             return ret;
         }
