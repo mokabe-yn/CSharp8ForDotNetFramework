@@ -30,10 +30,18 @@
 // Nullable support Attributes
 
 namespace System {
-    ref struct Span<T> {
-        //ref T[] a;
+    // The slow Span.
+    internal readonly ref struct Span<T> {
+        readonly T[] _ref;
+        readonly int _start;
+        readonly int _length;
+
+        public bool IsEmpty => throw new NotImplementedException();
         //Pinnable<T>
-        public Span<T> Slice(int a, int b) {
+        public Span<T> Slice(int start) {
+            throw new NotImplementedException();
+        }
+        public Span<T> Slice(int start, int length) {
             throw new NotImplementedException();
         }
         public T this[int index] {
@@ -45,9 +53,49 @@ namespace System {
         // `Span<T> _ = stackalloc T[N]` is not supported.
         // because require unsafe block.
         //public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
+
+        public T[] ToArray() => throw new NotImplementedException();
+    }
+    // The slow Span.
+    internal readonly ref struct ReadOnlySpan<T> {
+        readonly T[] _ref;
+        readonly int _start;
+        readonly int _length;
+
+        public bool IsEmpty => throw new NotImplementedException();
+        //Pinnable<T>
+        public ReadOnlySpan<T> Slice(int start) {
+            throw new NotImplementedException();
+        }
+        public ReadOnlySpan<T> Slice(int start, int length) {
+            throw new NotImplementedException();
+        }
+        public T this[int index] {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+        public ReadOnlySpan(T[] array) => throw new NotImplementedException();
+        public ReadOnlySpan(T[] array, int start, int length) => throw new NotImplementedException();
+        // `Span<T> _ = stackalloc T[N]` is not supported.
+        // because require unsafe block.
+        //public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
+
+        public T[] ToArray() => throw new NotImplementedException();
+        public new string ToString() {
+            throw new NotImplementedException();
+        }
     }
     internal static class _____ {
         public static Span<T> AsSpan<T>(this T[] array) {
+            throw new NotImplementedException();
+        }
+        public static Span<T> AsSpan<T>(this T[] array, int start) {
+            throw new NotImplementedException();
+        }
+        public static ReadOnlySpan<char> AsSpan(this string array) {
+            throw new NotImplementedException();
+        }
+        public static ReadOnlySpan<char> AsSpan(this string array, int start) {
             throw new NotImplementedException();
         }
     }
