@@ -60,6 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CS7.2-Only.cs" />
     <Compile Include="..\..\CS8-Only.cs" />
     <Compile Include="..\..\CS9-Only.cs" />
     <Compile Include="..\..\CS10-Only.cs" />
