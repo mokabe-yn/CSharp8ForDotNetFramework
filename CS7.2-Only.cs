@@ -29,6 +29,9 @@
 
 // Nullable support Attributes
 
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
+
 namespace System {
     // The slow Span.
     internal readonly ref struct Span<T> {
@@ -36,25 +39,45 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
-        public bool IsEmpty => throw new NotImplementedException();
-        //Pinnable<T>
+        public bool IsEmpty => _length == 0;
         public Span<T> Slice(int start) {
-            throw new NotImplementedException();
+            return new Span<T>(_ref, _start + start, _length - start);
         }
         public Span<T> Slice(int start, int length) {
-            throw new NotImplementedException();
+            return new Span<T>(_ref, _start + start, length);
         }
         public T this[int index] {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get {
+                if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+                if (index >= _length) throw new ArgumentOutOfRangeException(nameof(index));
+                return _ref[_start + index];
+            }
+            set {
+                if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+                if (index >= _length) throw new ArgumentOutOfRangeException(nameof(index));
+                _ref[_start + index] = value;
+            }
         }
-        public Span(T[] array) => throw new NotImplementedException();
-        public Span(T[] array, int start, int length) => throw new NotImplementedException();
+        public Span(T[] array) : this(array, 0, array.Length) { }
+        public Span(T[] array, int start, int length) {
+            if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
+            if (start + length > array.Length) throw new ArgumentOutOfRangeException(nameof(length));
+            _ref = array;
+            _start = start;
+            _length = length;
+        }
         // `Span<T> _ = stackalloc T[N]` is not supported.
         // because require unsafe block.
         //public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
 
-        public T[] ToArray() => throw new NotImplementedException();
+        public T[] ToArray() {
+            if (_length == 0) return Array.Empty<T>();
+            T[] ret = new T[_length];
+            for(int srci=_start, dsti = 0; srci < _length; srci++, dsti++) {
+                ret[dsti] = ret[srci];
+            }
+            return ret;
+        }
     }
     // The slow Span.
     internal readonly ref struct ReadOnlySpan<T> {
@@ -62,41 +85,60 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
-        public bool IsEmpty => throw new NotImplementedException();
-        //Pinnable<T>
+        public bool IsEmpty => _length == 0;
         public ReadOnlySpan<T> Slice(int start) {
-            throw new NotImplementedException();
+            return new ReadOnlySpan<T>(_ref, _start + start, _length - start);
         }
         public ReadOnlySpan<T> Slice(int start, int length) {
-            throw new NotImplementedException();
+            return new ReadOnlySpan<T>(_ref, _start + start, length);
         }
         public T this[int index] {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
+            get {
+                if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+                if (index >= _length) throw new ArgumentOutOfRangeException(nameof(index));
+                return _ref[_start + index];
+            }
         }
-        public ReadOnlySpan(T[] array) => throw new NotImplementedException();
-        public ReadOnlySpan(T[] array, int start, int length) => throw new NotImplementedException();
-        // `Span<T> _ = stackalloc T[N]` is not supported.
+        public ReadOnlySpan(T[] array) : this(array, 0, array.Length) { }
+        public ReadOnlySpan(T[] array, int start, int length) {
+            if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
+            if (start + length > array.Length) throw new ArgumentOutOfRangeException(nameof(length));
+            _ref = array;
+            _start = start;
+            _length = length;
+        }
+        // `ReadOnlySpan<T> _ = stackalloc T[N]` is not supported.
         // because require unsafe block.
-        //public unsafe Span(void* pointer, int length) => throw new NotImplementedException();
+        //public unsafe ReadOnlySpan(void* pointer, int length) => throw new NotImplementedException();
 
-        public T[] ToArray() => throw new NotImplementedException();
-        public new string ToString() {
-            throw new NotImplementedException();
+        public T[] ToArray() {
+            if (_length == 0) return Array.Empty<T>();
+            T[] ret = new T[_length];
+            for (int srci = _start, dsti = 0; srci < _length; srci++, dsti++) {
+                ret[dsti] = ret[srci];
+            }
+            return ret;
+        }
+
+        public override string ToString() {
+            if (typeof(T) == typeof(char)) {
+                return string.Join("", ToArray());
+            }
+            return $"System.ReadOnlySpan<{typeof(T).Name}>[{_length}]";
         }
     }
     internal static class _____ {
         public static Span<T> AsSpan<T>(this T[] array) {
-            throw new NotImplementedException();
+            return new Span<T>(array);
         }
         public static Span<T> AsSpan<T>(this T[] array, int start) {
-            throw new NotImplementedException();
+            return new Span<T>(array, start, array.Length - start);
         }
-        public static ReadOnlySpan<char> AsSpan(this string array) {
-            throw new NotImplementedException();
+        public static ReadOnlySpan<char> AsSpan(this string text) {
+            return new ReadOnlySpan<char>(text.ToArray());
         }
-        public static ReadOnlySpan<char> AsSpan(this string array, int start) {
-            throw new NotImplementedException();
+        public static ReadOnlySpan<char> AsSpan(this string text, int start) {
+            return new ReadOnlySpan<char>(text.ToArray(), start, text.Length - start);
         }
     }
 }
