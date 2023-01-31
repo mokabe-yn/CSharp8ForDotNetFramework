@@ -27,13 +27,9 @@
 
 
 
-// Nullable support Attributes
 
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-
+// The slow Span.
 namespace System {
-    // The slow Span.
     internal readonly ref struct Span<T> {
         readonly T[] _ref;
         readonly int _start;
@@ -81,7 +77,6 @@ namespace System {
             return ret;
         }
     }
-    // The slow Span.
     internal readonly ref struct ReadOnlySpan<T> {
         readonly T[] _ref;
         readonly int _start;
@@ -131,7 +126,7 @@ namespace System {
             return $"System.ReadOnlySpan<{typeof(T).Name}>[{_length}]";
         }
     }
-    internal static class _____ {
+    internal static class CSharp8ForDotNetFrameworkSpanExtension {
         public static Span<T> AsSpan<T>(this T[] array) {
             return new Span<T>(array);
         }
@@ -139,10 +134,10 @@ namespace System {
             return new Span<T>(array, start, array.Length - start);
         }
         public static ReadOnlySpan<char> AsSpan(this string text) {
-            return new ReadOnlySpan<char>(text.ToArray());
+            return new ReadOnlySpan<char>(System.Linq.Enumerable.ToArray(text));
         }
         public static ReadOnlySpan<char> AsSpan(this string text, int start) {
-            return new ReadOnlySpan<char>(text.ToArray(), start, text.Length - start);
+            return new ReadOnlySpan<char>(System.Linq.Enumerable.ToArray(text), start, text.Length - start);
         }
     }
 }
