@@ -24,6 +24,7 @@ C#9の場合は `CS9.cs` をプロジェクトに追加する。
 ===
 それぞれのバージョンのReadmeを参照。
 
+- [C#7.2](Readme-CS7.2.md)
 - [C#8](Readme-CS8.md)
 - [C#9](Readme-CS9.md)
 - [C#10](Readme-CS10.md)
