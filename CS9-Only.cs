@@ -58,3 +58,9 @@ namespace System.Diagnostics.CodeAnalysis {
 namespace System.Runtime.CompilerServices {
     internal static class IsExternalInit { }
 }
+
+// ModuleInitializer
+namespace System.Runtime.CompilerServices {
+    [System.AttributeUsage(System.AttributeTargets.Method, Inherited = false)]
+    internal sealed class ModuleInitializerAttribute : Attribute { }
+}
