@@ -4,7 +4,7 @@ using System;
 
 
 // プロジェクトの設定をしてもわざわざこちらでも enable にする必要がある
-#nullable enable 
+#nullable enable
 
 namespace CS8 {
     // 警告なしでコンパイルが通ればいいので [TestClass] は不要

@@ -9,6 +9,17 @@ Init専用プロパティ
 `new Class(){ Property = 0 };`のように、
 初期化時だけ代入を認める特殊なプロパティ。
 
+モジュール初期化子
+----
+この属性をつけた関数は、静的コンストラクタのように最初に1回だけ呼ばれる。
+
+usage: 
+```
+class A {
+    [ModuleInitializer] internal void InitMethod1() {}
+    [ModuleInitializer] internal void InitMethod2() {}
+}
+```
 
 アノテーション属性
 ---
