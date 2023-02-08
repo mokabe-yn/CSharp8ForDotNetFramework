@@ -60,3 +60,30 @@ usage:
     }
 }
 ```
+
+ローカル変数の初期化抑止
+------------------------
+C#ではすべての変数を0初期化する仕様になっている。
+stackalloc配列で0初期化を無駄と割り切れる場合、0初期化分のコストが無駄になる。
+
+この属性を付けた関数はローカル変数の0初期化をしない。
+unsafeなのでunsafe関数でしか利用できない。
+
+usage:
+```
+[SkipLocalsInit]
+string ToString(uint value) {
+    if (value == 0) return "0";
+    // 桁数が少ない場合、配列の先頭のほうは参照しない
+    char* first = stackalloc char[10];
+    char* p = first + 10;
+    int length = 0;
+    while (value != 0) {
+        p--;
+        *p = (char)(value % 10 + '0');
+        value /= 10;
+        length++;
+    }
+    return new string(p, 0, length);
+}
+```
