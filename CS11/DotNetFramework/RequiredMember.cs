@@ -14,8 +14,7 @@ namespace CS11 {
         }
     }
 
-    file class C
-    {
+    file class C {
         public required int Property { get; init; }
     }
 }
