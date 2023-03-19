@@ -66,6 +66,8 @@ namespace System.Runtime.CompilerServices {
 // DEALINGS IN THE SOFTWARE.
 
 // Nullable support Attributes
+
+
 namespace System.Diagnostics.CodeAnalysis {
     [System.AttributeUsage(
         System.AttributeTargets.Method |
@@ -103,6 +105,20 @@ namespace System.Runtime.CompilerServices {
 namespace System.Runtime.CompilerServices {
     [System.AttributeUsage(System.AttributeTargets.Method, Inherited = false)]
     internal sealed class ModuleInitializerAttribute : Attribute { }
+}
+
+// SkipLocalsInit
+namespace System.Runtime.CompilerServices {
+    [System.AttributeUsage(
+        System.AttributeTargets.Class |
+        System.AttributeTargets.Constructor |
+        System.AttributeTargets.Event |
+        System.AttributeTargets.Interface |
+        System.AttributeTargets.Method |
+        System.AttributeTargets.Module |
+        System.AttributeTargets.Property |
+        System.AttributeTargets.Struct, Inherited = false)]
+    internal sealed class SkipLocalsInitAttribute : Attribute { }
 }
 // CSharp8ForDotNetFramework for C#8
 // Copyright 2023 Masayuki Okabe <okabe_m@hmi.aitech.ac.jp>
@@ -624,7 +640,7 @@ namespace CSharp8ForDotNetFramework {
         }
     }
 }
-// CSharp8ForDotNetFramework for C#8
+// CSharp8ForDotNetFramework for C#7.2
 // Copyright 2023 Masayuki Okabe <okabe_m@hmi.aitech.ac.jp>
 //
 // Boost Software License - Version 1.0 - August 17th, 2003
