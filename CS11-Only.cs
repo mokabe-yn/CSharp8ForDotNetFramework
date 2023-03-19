@@ -43,4 +43,8 @@ namespace System.Runtime.CompilerServices {
             FeatureName = featureName;
         }
     }
+
+    [System.AttributeUsage(
+        System.AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
+    internal sealed class SetsRequiredMembersAttribute : Attribute { }
 }
