@@ -75,7 +75,7 @@ namespace System.Diagnostics.CodeAnalysis {
     internal sealed class NotNullIfNotNullAttribute : Attribute {
         public string ParameterName { get; }
         public NotNullIfNotNullAttribute(string parameterName) {
-            ParameterName = parameterName; // requires C#8
+            ParameterName = parameterName;
         }
     }
     [System.AttributeUsage(
