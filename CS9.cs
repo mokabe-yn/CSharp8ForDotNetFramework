@@ -157,7 +157,7 @@ namespace System.Diagnostics.CodeAnalysis {
     internal sealed class NotNullIfNotNullAttribute : Attribute {
         public string ParameterName { get; }
         public NotNullIfNotNullAttribute(string parameterName) {
-            ParameterName = parameterName; // requires C#8
+            ParameterName = parameterName;
         }
     }
     [System.AttributeUsage(
@@ -261,7 +261,7 @@ namespace System {
             }
         }
         public override int GetHashCode() {
-            return new CSharp8ForDotNetFramework.__hashcode_cs8()
+            return new CSharp8ForDotNetFramework.Detail.HashcodeCs8()
                 .Combine(Start)
                 .Combine(End)
                 ;
@@ -574,19 +574,20 @@ namespace System.Threading.Tasks {
     }
 }
 
-namespace CSharp8ForDotNetFramework {
+namespace CSharp8ForDotNetFramework.Detail {
     // INTERNAL hash utility.
     // usage:
     //     public override int GetHashCode() {
-    //         return new CSharp8ForDotNetFramework.__hashcode_cs8()
+    //         return new CSharp8ForDotNetFramework.HashcodeCs8()
     //             .Combine(_field1)
-    //             .Combine(_field1)
-    //             .Combine(_field1)
+    //             .Combine(_field2)
+    //             .Combine(_field3)
     //             .Final();
     //     }
-    /* INTERNAL */ struct __hashcode_cs8 {
+    /* INTERNAL */
+    struct HashcodeCs8 {
         int _value;
-        public __hashcode_cs8 Combine<T>(T obj) where T : struct {
+        public HashcodeCs8 Combine<T>(T obj) where T : struct {
             _value ^= _value << 13;
             _value ^= _value >> 17;
             _value ^= _value << 5;
@@ -595,7 +596,7 @@ namespace CSharp8ForDotNetFramework {
         }
         // requires C#8 readonly method.
         public readonly int Final() => _value;
-        public static implicit operator int(__hashcode_cs8 @this) {
+        public static implicit operator int(HashcodeCs8 @this) {
             return @this.Final();
         }
     }
@@ -637,7 +638,9 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
+        public Span<T> Empty => new Span<T>(Array.Empty<T>(), 0, 0);
         public bool IsEmpty => _length == 0;
+        public int Length => _length;
         public Span<T> Slice(int start) {
             return new Span<T>(_ref, _start + start, _length - start);
         }
@@ -684,7 +687,9 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
+        public ReadOnlySpan<T> Empty => new ReadOnlySpan<T>(Array.Empty<T>(), 0, 0);
         public bool IsEmpty => _length == 0;
+        public int Length => _length;
         public ReadOnlySpan<T> Slice(int start) {
             return new ReadOnlySpan<T>(_ref, _start + start, _length - start);
         }
