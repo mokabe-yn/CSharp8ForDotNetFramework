@@ -35,7 +35,9 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
+        public Span<T> Empty => new Span<T>(Array.Empty<T>(), 0, 0);
         public bool IsEmpty => _length == 0;
+        public int Length => _length;
         public Span<T> Slice(int start) {
             return new Span<T>(_ref, _start + start, _length - start);
         }
@@ -82,7 +84,9 @@ namespace System {
         readonly int _start;
         readonly int _length;
 
+        public ReadOnlySpan<T> Empty => new ReadOnlySpan<T>(Array.Empty<T>(), 0, 0);
         public bool IsEmpty => _length == 0;
+        public int Length => _length;
         public ReadOnlySpan<T> Slice(int start) {
             return new ReadOnlySpan<T>(_ref, _start + start, _length - start);
         }

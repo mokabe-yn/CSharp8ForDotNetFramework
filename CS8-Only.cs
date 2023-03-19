@@ -75,7 +75,7 @@ namespace System.Diagnostics.CodeAnalysis {
     internal sealed class NotNullIfNotNullAttribute : Attribute {
         public string ParameterName { get; }
         public NotNullIfNotNullAttribute(string parameterName) {
-            ParameterName = parameterName; // requires C#8
+            ParameterName = parameterName;
         }
     }
     [System.AttributeUsage(
@@ -179,7 +179,7 @@ namespace System {
             }
         }
         public override int GetHashCode() {
-            return new CSharp8ForDotNetFramework.__hashcode_cs8()
+            return new CSharp8ForDotNetFramework.Detail.HashcodeCs8()
                 .Combine(Start)
                 .Combine(End)
                 ;
@@ -492,19 +492,20 @@ namespace System.Threading.Tasks {
     }
 }
 
-namespace CSharp8ForDotNetFramework {
+namespace CSharp8ForDotNetFramework.Detail {
     // INTERNAL hash utility.
     // usage:
     //     public override int GetHashCode() {
-    //         return new CSharp8ForDotNetFramework.__hashcode_cs8()
+    //         return new CSharp8ForDotNetFramework.HashcodeCs8()
     //             .Combine(_field1)
-    //             .Combine(_field1)
-    //             .Combine(_field1)
+    //             .Combine(_field2)
+    //             .Combine(_field3)
     //             .Final();
     //     }
-    /* INTERNAL */ struct __hashcode_cs8 {
+    /* INTERNAL */
+    struct HashcodeCs8 {
         int _value;
-        public __hashcode_cs8 Combine<T>(T obj) where T : struct {
+        public HashcodeCs8 Combine<T>(T obj) where T : struct {
             _value ^= _value << 13;
             _value ^= _value >> 17;
             _value ^= _value << 5;
@@ -513,7 +514,7 @@ namespace CSharp8ForDotNetFramework {
         }
         // requires C#8 readonly method.
         public readonly int Final() => _value;
-        public static implicit operator int(__hashcode_cs8 @this) {
+        public static implicit operator int(HashcodeCs8 @this) {
             return @this.Final();
         }
     }
