@@ -52,9 +52,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CallerArgumentExpression.cs" />
+    <Compile Include="RequiredMember.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Empty.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
