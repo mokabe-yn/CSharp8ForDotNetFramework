@@ -26,3 +26,25 @@
 // DEALINGS IN THE SOFTWARE.
 
 #nullable enable
+
+namespace System.Runtime.CompilerServices {
+    [System.AttributeUsage(
+        System.AttributeTargets.Class |
+        System.AttributeTargets.Field |
+        System.AttributeTargets.Property |
+        System.AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
+    internal sealed class RequiredMemberAttribute : Attribute { }
+
+    [System.AttributeUsage(
+        System.AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+    internal sealed class CompilerFeatureRequiredAttribute : Attribute {
+        public string FeatureName { get; }
+        public CompilerFeatureRequiredAttribute(string featureName) {
+            FeatureName = featureName;
+        }
+    }
+
+    [System.AttributeUsage(
+        System.AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
+    internal sealed class SetsRequiredMembersAttribute : Attribute { }
+}
