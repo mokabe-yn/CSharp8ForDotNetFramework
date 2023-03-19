@@ -48,3 +48,7 @@ namespace System.Runtime.CompilerServices {
         System.AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
     internal sealed class SetsRequiredMembersAttribute : Attribute { }
 }
+
+namespace CSharp8ForDotNetFramework.Detail {
+    file struct DummyCS11 { } // requires C#11
+}
